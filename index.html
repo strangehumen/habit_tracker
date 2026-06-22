@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f0f14" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="習慣トラッカー" />
+  <link rel="manifest" href="manifest.json" />
+  <title>習慣トラッカー Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== ヘッダー ===== -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div>
+        <span class="header-label">HABIT TRACKER PRO</span>
+        <h1 class="app-title">習慣トラッカー</h1>
+      </div>
+      <button class="add-habit-fab" id="openModalBtn" aria-label="習慣を追加">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== サマリーバー ===== -->
+  <div class="summary-bar">
+    <div class="summary-item">
+      <span class="summary-val" id="todayRate">0%</span>
+      <span class="summary-key">今日の達成率</span>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <span class="summary-val" id="totalHabits">0</span>
+      <span class="summary-key">習慣数</span>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <span class="summary-val" id="bestStreak">0🔥</span>
+      <span class="summary-key">最長継続</span>
+    </div>
+  </div>
+
+  <!-- ===== メインコンテンツ ===== -->
+  <main class="main-content">
+
+    <!-- 今日の習慣 -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">今日の習慣</h2>
+        <span class="today-date" id="todayDate"></span>
+      </div>
+      <ul class="habit-list" id="habitList">
+        <!-- JSで描画 -->
+      </ul>
+      <div class="empty-state" id="emptyHabits">
+        <p class="empty-icon">🌱</p>
+        <p class="empty-text">習慣がまだありません</p>
+        <p class="empty-sub">右上の＋から追加しましょう</p>
+      </div>
+    </section>
+
+    <!-- 今週グラフ -->
+    <section class="section" id="graphSection">
+      <div class="section-header">
+        <h2 class="section-title">今週の達成率</h2>
+      </div>
+      <div class="week-graph" id="weekGraph"></div>
+    </section>
+
+    <!-- カレンダー -->
+    <section class="section" id="calendarSection">
+      <div class="section-header">
+        <h2 class="section-title">カレンダー</h2>
+        <div class="cal-nav">
+          <button class="cal-nav-btn" id="calPrev">‹</button>
+          <span class="cal-month" id="calMonth"></span>
+          <button class="cal-nav-btn" id="calNext">›</button>
+        </div>
+      </div>
+      <div class="calendar-wrap" id="calendarWrap"></div>
+    </section>
+
+  </main>
+
+  <!-- ===== 習慣追加モーダル ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">習慣を追加</h2>
+        <button class="modal-close" id="closeModalBtn" aria-label="閉じる">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label for="habitNameInput">習慣名</label>
+          <input type="text" id="habitNameInput" placeholder="例：筋トレ、読書、英語…" maxlength="20" />
+        </div>
+        <div class="field">
+          <label>アイコン</label>
+          <div class="emoji-grid" id="emojiGrid">
+            <button type="button" class="emoji-btn active" data-emoji="💪">💪</button>
+            <button type="button" class="emoji-btn" data-emoji="📚">📚</button>
+            <button type="button" class="emoji-btn" data-emoji="🧠">🧠</button>
+            <button type="button" class="emoji-btn" data-emoji="🤖">🤖</button>
+            <button type="button" class="emoji-btn" data-emoji="🏃">🏃</button>
+            <button type="button" class="emoji-btn" data-emoji="🧘">🧘</button>
+            <button type="button" class="emoji-btn" data-emoji="💧">💧</button>
+            <button type="button" class="emoji-btn" data-emoji="🥗">🥗</button>
+            <button type="button" class="emoji-btn" data-emoji="✍️">✍️</button>
+            <button type="button" class="emoji-btn" data-emoji="🎵">🎵</button>
+            <button type="button" class="emoji-btn" data-emoji="🌙">🌙</button>
+            <button type="button" class="emoji-btn" data-emoji="⭐">⭐</button>
+          </div>
+        </div>
+        <button class="modal-submit" id="modalSubmitBtn">追加する</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
